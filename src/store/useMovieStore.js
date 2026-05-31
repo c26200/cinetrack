@@ -1,13 +1,7 @@
-import { useReducer, useEffect, useCallback, useMemo, useState } from 'react';
+import { useReducer, useEffect, useCallback, useMemo } from 'react';
 
 const STORAGE_KEY = 'cinetrack-movies';
-const APIKEY_STORAGE = 'cinetrack-apikey';
-// Env var takes priority, then localStorage, then empty (user must enter)
-const ENV_KEY = import.meta.env.VITE_OMDB_KEY || '';
-
-function getInitialApiKey() {
-  return ENV_KEY || localStorage.getItem(APIKEY_STORAGE) || '';
-}
+const API_KEY = 'ec83d8bc';
 
 function loadState() {
   try {
@@ -22,11 +16,11 @@ function reducer(state, action) {
     case 'LOAD':
       return { ...state, movies: action.payload };
 
-    case 'IMPORT':
-      // Merge imported movies with existing (don't duplicate by imdbID)
+    case 'IMPORT': {
       const existingIds = new Set(state.movies.map((m) => m.imdbID));
       const newMovies = action.payload.filter((m) => !existingIds.has(m.imdbID));
       return { ...state, movies: [...newMovies, ...state.movies] };
+    }
 
     case 'ADD': {
       const exists = state.movies.find((m) => m.imdbID === action.payload.imdbID);
@@ -120,15 +114,7 @@ export function useMovieStore() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.movies));
   }, [state.movies]);
 
-  // API key: env var → localStorage fallback → user must enter
-  const [apiKey, setApiKeyState] = useState(getInitialApiKey);
-
-  const setApiKey = useCallback((key) => {
-    localStorage.setItem(APIKEY_STORAGE, key);
-    setApiKeyState(key);
-  }, []);
-
-  // Export all movies as a downloadable JSON file
+  // Export movies as downloadable JSON
   const exportMovies = useCallback(() => {
     const blob = new Blob([JSON.stringify(state.movies, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -139,7 +125,7 @@ export function useMovieStore() {
     URL.revokeObjectURL(url);
   }, [state.movies]);
 
-  // Import movies from a JSON file
+  // Import movies from JSON file
   const importMovies = useCallback(() => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -153,12 +139,12 @@ export function useMovieStore() {
           const data = JSON.parse(ev.target.result);
           if (Array.isArray(data)) {
             dispatch({ type: 'IMPORT', payload: data });
-            alert(`✅ ${data.length} películas importadas. (Las duplicadas se omitieron)`);
+            alert(`✅ ${data.length} películas importadas. Las duplicadas se omitieron.`);
           } else {
-            alert('❌ El archivo no es válido. Debe ser un JSON con un array de películas.');
+            alert('❌ El archivo no es válido.');
           }
         } catch {
-          alert('❌ No se pudo leer el archivo. Asegurate de que sea un JSON válido.');
+          alert('❌ No se pudo leer el archivo.');
         }
       };
       reader.readAsText(file);
@@ -166,14 +152,12 @@ export function useMovieStore() {
     input.click();
   }, [dispatch]);
 
-  // Computed: filtered + sorted movies
+  // Computed: filtered + sorted
   const filteredMovies = useMemo(() => {
     let list = state.movies;
-
     if (state.filter !== 'all') {
       list = list.filter((m) => m.status === state.filter);
     }
-
     const sorted = [...list];
     switch (state.sortBy) {
       case 'title':
@@ -201,8 +185,7 @@ export function useMovieStore() {
     state,
     dispatch,
     filteredMovies,
-    apiKey,
-    setApiKey,
+    apiKey: API_KEY,
     exportMovies,
     importMovies,
   };
