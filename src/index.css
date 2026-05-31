@@ -1,0 +1,64 @@
+/* ============================================================
+   CineTrack · Cinema Dark Design System
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap');
+
+:root {
+  --bg-deep: #0D0C0C;
+  --bg-surface: #161514;
+  --bg-elevated: #1E1C1A;
+  --bg-hover: #282520;
+  --gold: #D4A853;
+  --gold-dim: #8B7340;
+  --gold-glow: rgba(212, 168, 83, 0.12);
+  --gold-glow-strong: rgba(212, 168, 83, 0.22);
+  --text-primary: #E8E2D5;
+  --text-secondary: #9B9485;
+  --text-muted: #635E53;
+  --border: #2A2722;
+  --border-active: #4A4030;
+  --green-done: #5A8F5C;
+  --blue-active: #5A8FBF;
+  --red-remove: #C44B3B;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 15px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-active); }
+
+*:focus-visible {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: 2px;
+}
+
+button { cursor: pointer; font-family: inherit; }
+input, select, textarea { font-family: inherit; }
+
+::selection {
+  background: rgba(212, 168, 83, 0.25);
+  color: var(--text-primary);
+}
