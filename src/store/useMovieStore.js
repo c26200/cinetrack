@@ -3,7 +3,7 @@ import { useReducer, useEffect, useCallback, useMemo, useState } from 'react';
 const STORAGE_KEY = 'cinetrack-movies';
 const APIKEY_STORAGE = 'cinetrack-apikey';
 // Env var takes priority, then localStorage, then empty (user must enter)
-const ENV_KEY = import.meta.env.VITE_OMDB_API_KEY || '';
+const ENV_KEY = import.meta.env.VITE_OMDB_KEY || '';
 
 function getInitialApiKey() {
   return ENV_KEY || localStorage.getItem(APIKEY_STORAGE) || '';
