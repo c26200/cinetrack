@@ -21,9 +21,10 @@ const sharedBtn = {
 };
 
 export default function App() {
-  const { state, dispatch, filteredMovies, apiKey, exportMovies, importMovies } = useMovieStore();
+  const { state, dispatch, filteredMovies, apiKey, setApiKey, exportMovies, importMovies } = useMovieStore();
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [localQuery, setLocalQuery] = useState('');
+  const [keyInput, setKeyInput] = useState('');
 
   const displayed = localQuery.trim()
     ? filteredMovies.filter((m) =>
@@ -94,48 +95,81 @@ export default function App() {
         }
       `}</style>
 
-      {/* Top bar with share controls */}
+      {/* Top bar with share controls + API key */}
       <div
         style={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           gap: '8px',
           padding: '10px 0 0',
           borderBottom: '1px solid var(--border)',
           marginBottom: '0',
+          flexWrap: 'wrap',
         }}
       >
-        <button
-          onClick={exportMovies}
-          style={sharedBtn}
-          title="Descargá tu lista como archivo JSON para compartir"
-          onMouseEnter={(e) => (e.target.style.borderColor = 'var(--gold-dim)')}
-          onMouseLeave={(e) => (e.target.style.borderColor = 'var(--border)')}
-        >
-          📥 Exportar lista
-        </button>
-        <button
-          onClick={importMovies}
-          style={sharedBtn}
-          title="Importá una lista desde un archivo JSON"
-          onMouseEnter={(e) => (e.target.style.borderColor = 'var(--gold-dim)')}
-          onMouseLeave={(e) => (e.target.style.borderColor = 'var(--border)')}
-        >
-          📤 Importar lista
-        </button>
-        <span
-          style={{
-            fontSize: '0.7rem',
-            color: 'var(--text-muted)',
-            display: 'flex',
-            alignItems: 'center',
-            marginLeft: '8px',
-          }}
-        >
-          {state.movies.length > 0
-            ? `${state.movies.length} película${state.movies.length > 1 ? 's' : ''}`
-            : 'Sin películas — buscá y agregá la primera ↑'}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span
+            style={{
+              fontSize: '0.7rem',
+              color: 'var(--text-muted)',
+            }}
+          >
+            {state.movies.length > 0
+              ? `${state.movies.length} película${state.movies.length > 1 ? 's' : ''}`
+              : 'Sin películas — buscá y agregá la primera ↑'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {!apiKey && (
+            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="OMDB API key…"
+                value={keyInput}
+                onChange={(e) => setKeyInput(e.target.value)}
+                style={{
+                  background: 'var(--bg-surface)',
+                  border: '1px solid var(--gold-dim)',
+                  color: 'var(--text-primary)',
+                  padding: '5px 10px',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.75rem',
+                  width: '180px',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              />
+              <button
+                onClick={() => setApiKey(keyInput.trim())}
+                disabled={!keyInput.trim()}
+                style={{
+                  ...sharedBtn,
+                  background: 'var(--gold)',
+                  color: '#0D0C0C',
+                  fontWeight: 600,
+                  border: 'none',
+                  opacity: keyInput.trim() ? 1 : 0.5,
+                }}
+              >
+                Guardar
+              </button>
+              <a
+                href="https://www.omdbapi.com/apikey.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '0.68rem', color: 'var(--gold-dim)' }}
+              >
+                (conseguir key gratis)
+              </a>
+            </div>
+          )}
+          <button onClick={exportMovies} style={sharedBtn} title="Descargá tu lista como JSON para compartir">
+            📥 Exportar
+          </button>
+          <button onClick={importMovies} style={sharedBtn} title="Importá una lista desde un archivo JSON">
+            📤 Importar
+          </button>
+        </div>
       </div>
 
       <Header
