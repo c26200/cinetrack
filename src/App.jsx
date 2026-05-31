@@ -1,26 +1,36 @@
 import { useState, useCallback } from 'react';
 import { useMovieStore } from './store/useMovieStore';
 import { getMovieDetail } from './api/omdb';
-import ApiKeySetup from './components/ApiKeySetup';
 import Header from './components/Header';
 import OmdbSearch from './components/OmdbSearch';
 import FilterTabs from './components/FilterTabs';
 import MovieBoard from './components/MovieBoard';
 import MovieModal from './components/MovieModal';
 
+const sharedBtn = {
+  background: 'var(--bg-surface)',
+  border: '1px solid var(--border)',
+  color: 'var(--text-secondary)',
+  padding: '6px 14px',
+  borderRadius: 'var(--radius-sm)',
+  fontSize: '0.78rem',
+  cursor: 'pointer',
+  fontFamily: 'var(--font-body)',
+  fontWeight: 500,
+  transition: 'all 0.2s',
+};
+
 export default function App() {
-  const { state, dispatch, filteredMovies, setApiKey } = useMovieStore();
+  const { state, dispatch, filteredMovies, apiKey, exportMovies, importMovies } = useMovieStore();
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [localQuery, setLocalQuery] = useState('');
 
-  // Filter by local search
   const displayed = localQuery.trim()
     ? filteredMovies.filter((m) =>
         m.title.toLowerCase().includes(localQuery.toLowerCase())
       )
     : filteredMovies;
 
-  // Counts for filter tabs
   const counts = {
     all: state.movies.length,
     pending: state.movies.filter((m) => m.status === 'pending').length,
@@ -28,10 +38,9 @@ export default function App() {
     watched: state.movies.filter((m) => m.status === 'watched').length,
   };
 
-  // Add movie from OMDB search
   const handleAdd = useCallback(
     async (searchResult) => {
-      const detail = await getMovieDetail(searchResult.imdbID, state.apiKey);
+      const detail = await getMovieDetail(searchResult.imdbID, apiKey);
       if (detail.Response === 'False') return;
       dispatch({
         type: 'ADD',
@@ -48,17 +57,14 @@ export default function App() {
         },
       });
     },
-    [state.apiKey, dispatch]
+    [apiKey, dispatch]
   );
 
-  // Status cycling
   const handleStatusChange = useCallback(
     (movie) => {
       if (movie.status === 'watched') {
-        // Cycle back to pending
         dispatch({ type: 'STATUS', payload: { id: movie.imdbID, status: 'pending' } });
       } else if (movie.status === 'watching') {
-        // Ask for rating
         const rating = window.prompt('¿Qué puntuación le das? (1–5)', '4');
         const num = parseInt(rating, 10);
         dispatch({ type: 'STATUS', payload: { id: movie.imdbID, status: 'watched' } });
@@ -71,11 +77,6 @@ export default function App() {
     },
     [dispatch]
   );
-
-  // API key screen
-  if (!state.apiKey) {
-    return <ApiKeySetup onSave={setApiKey} />;
-  }
 
   return (
     <div
@@ -93,6 +94,50 @@ export default function App() {
         }
       `}</style>
 
+      {/* Top bar with share controls */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '8px',
+          padding: '10px 0 0',
+          borderBottom: '1px solid var(--border)',
+          marginBottom: '0',
+        }}
+      >
+        <button
+          onClick={exportMovies}
+          style={sharedBtn}
+          title="Descargá tu lista como archivo JSON para compartir"
+          onMouseEnter={(e) => (e.target.style.borderColor = 'var(--gold-dim)')}
+          onMouseLeave={(e) => (e.target.style.borderColor = 'var(--border)')}
+        >
+          📥 Exportar lista
+        </button>
+        <button
+          onClick={importMovies}
+          style={sharedBtn}
+          title="Importá una lista desde un archivo JSON"
+          onMouseEnter={(e) => (e.target.style.borderColor = 'var(--gold-dim)')}
+          onMouseLeave={(e) => (e.target.style.borderColor = 'var(--border)')}
+        >
+          📤 Importar lista
+        </button>
+        <span
+          style={{
+            fontSize: '0.7rem',
+            color: 'var(--text-muted)',
+            display: 'flex',
+            alignItems: 'center',
+            marginLeft: '8px',
+          }}
+        >
+          {state.movies.length > 0
+            ? `${state.movies.length} película${state.movies.length > 1 ? 's' : ''}`
+            : 'Sin películas — buscá y agregá la primera ↑'}
+        </span>
+      </div>
+
       <Header
         view={state.view}
         onViewChange={(v) => dispatch({ type: 'VIEW', payload: v })}
@@ -101,7 +146,7 @@ export default function App() {
         onLocalSearch={setLocalQuery}
       />
 
-      <OmdbSearch apiKey={state.apiKey} onAdd={handleAdd} />
+      <OmdbSearch apiKey={apiKey} onAdd={handleAdd} />
 
       <FilterTabs
         filter={state.filter}
