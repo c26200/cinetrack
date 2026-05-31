@@ -1,7 +1,13 @@
-import { useReducer, useEffect, useCallback, useMemo } from 'react';
+import { useReducer, useEffect, useCallback, useMemo, useState } from 'react';
 
 const STORAGE_KEY = 'cinetrack-movies';
-const DEFAULT_API_KEY = import.meta.env.VITE_OMDB_API_KEY || '';
+const APIKEY_STORAGE = 'cinetrack-apikey';
+// Env var takes priority, then localStorage, then empty (user must enter)
+const ENV_KEY = import.meta.env.VITE_OMDB_API_KEY || '';
+
+function getInitialApiKey() {
+  return ENV_KEY || localStorage.getItem(APIKEY_STORAGE) || '';
+}
 
 function loadState() {
   try {
@@ -114,8 +120,13 @@ export function useMovieStore() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.movies));
   }, [state.movies]);
 
-  // API key — always use the default shared key
-  const apiKey = DEFAULT_API_KEY;
+  // API key: env var → localStorage fallback → user must enter
+  const [apiKey, setApiKeyState] = useState(getInitialApiKey);
+
+  const setApiKey = useCallback((key) => {
+    localStorage.setItem(APIKEY_STORAGE, key);
+    setApiKeyState(key);
+  }, []);
 
   // Export all movies as a downloadable JSON file
   const exportMovies = useCallback(() => {
@@ -191,6 +202,7 @@ export function useMovieStore() {
     dispatch,
     filteredMovies,
     apiKey,
+    setApiKey,
     exportMovies,
     importMovies,
   };
