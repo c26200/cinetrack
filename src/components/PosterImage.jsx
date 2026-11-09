@@ -1,11 +1,13 @@
 import { colorFromImdbId } from '../utils/colors';
 
-const posterUrl = (imdbID) =>
-  `https://img.omdbapi.com/?apikey=ec83d8bc&i=${imdbID}&h=400`;
+const posterUrl = (imdbID) => {
+  const key = import.meta.env.VITE_OMDB_API_KEY;
+  return key ? `https://img.omdbapi.com/?apikey=${key}&i=${imdbID}&h=400` : null;
+};
 
 export default function PosterImage({ poster, imdbID, title, className = '' }) {
   // If we have a valid poster URL from the API, use it
-  const src = poster || posterUrl(imdbID);
+  const src = poster || posterUrl(imdbID) || '';
   const initials = title
     ? title
         .split(' ')

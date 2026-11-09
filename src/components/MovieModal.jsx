@@ -106,7 +106,7 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
 
           <div style={styles.metaRow}>
             <div>
-              <div style={styles.label}>Año</div>
+              <div style={styles.label}>Year</div>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>{movie.year}</span>
             </div>
             <div>
@@ -114,11 +114,11 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
               <span style={{ fontSize: '0.85rem', color: 'var(--gold)' }}>★ {movie.imdbRating || '—'}</span>
             </div>
             <div>
-              <div style={styles.label}>Duración</div>
+              <div style={styles.label}>Runtime</div>
               <span style={{ fontSize: '0.85rem' }}>{movie.runtime || '—'}</span>
             </div>
             <div>
-              <div style={styles.label}>Género</div>
+              <div style={styles.label}>Genre</div>
               <span style={{ fontSize: '0.85rem' }}>{movie.genre || '—'}</span>
             </div>
             <div>
@@ -139,17 +139,17 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
 
           {/* User Rating */}
           <div style={{ marginBottom: '18px' }}>
-            <div style={styles.label}>Mi puntuación</div>
+            <div style={styles.label}>My rating</div>
             <StarRating value={movie.userRating || 0} onChange={(v) => onRate(movie.imdbID, v)} />
           </div>
 
           {/* Notes */}
           <div style={{ marginBottom: '18px' }}>
-            <div style={styles.label}>Notas</div>
+            <div style={styles.label}>Notes</div>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Escribí tus notas sobre esta película…"
+              placeholder="Write your notes about this movie…"
               rows={3}
               style={{
                 width: '100%',
@@ -172,24 +172,24 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
               style={{ ...styles.btn, color: 'var(--gold)', borderColor: 'var(--gold-dim)' }}
             >
               {movie.status === 'watched'
-                ? '↺ Marcar como pendiente'
+                ? '↺ Mark as unwatched'
                 : movie.status === 'watching'
-                ? '✓ Marcar como vista'
+                ? '✓ Mark as watched'
                 : '▶ Marcar como viendo'}
             </button>
             <button
               onClick={() => {
-                if (window.confirm(`¿Eliminar «${movie.title}» definitivamente?`)) {
+                if (window.confirm(`Delete “${movie.title}” permanently?`)) {
                   onRemove(movie.imdbID);
                   onClose();
                 }
               }}
               style={{ ...styles.btn, color: 'var(--red-remove)', borderColor: 'var(--red-remove)' }}
             >
-              Eliminar
+              Delete
             </button>
             <button onClick={onClose} style={styles.btn}>
-              Cerrar
+              Close
             </button>
           </div>
         </div>

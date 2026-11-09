@@ -5,6 +5,8 @@ and move it through three states: pending, watching and watched.
 
 **[Live demo](https://cinetrack-gold-theta.vercel.app)**
 
+![CineTrack preview](./preview.png)
+
 ## What it does
 
 - Search movies by title through the OMDB API

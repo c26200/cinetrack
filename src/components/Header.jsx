@@ -68,7 +68,7 @@ export default function Header({ view, onViewChange, sortBy, onSortChange, onLoc
           </svg>
           <input
             type="text"
-            placeholder="Filtrar mi lista…"
+            placeholder="Filter my list…"
             onChange={(e) => onLocalSearch(e.target.value)}
             style={{
               background: 'var(--bg-surface)',
@@ -111,7 +111,7 @@ export default function Header({ view, onViewChange, sortBy, onSortChange, onLoc
                 boxShadow: view === v ? 'inset 0 1px 0 rgba(212,168,83,0.15)' : 'none',
               }}
             >
-              {v === 'kanban' ? 'Kanban' : v === 'grid' ? 'Grid' : 'Lista'}
+              {v === 'kanban' ? 'Kanban' : v === 'grid' ? 'Grid' : 'List'}
             </button>
           ))}
         </div>
@@ -131,10 +131,10 @@ export default function Header({ view, onViewChange, sortBy, onSortChange, onLoc
             fontFamily: 'var(--font-body)',
           }}
         >
-          <option value="addedAt">Fecha agregada ↓</option>
-          <option value="title">Título A–Z</option>
-          <option value="year">Año ↓</option>
-          <option value="imdbRating">Rating IMDB ↓</option>
+          <option value="addedAt">Date added ↓</option>
+          <option value="title">Title A–Z</option>
+          <option value="year">Year ↓</option>
+          <option value="imdbRating">IMDB rating ↓</option>
         </select>
       </div>
     </header>

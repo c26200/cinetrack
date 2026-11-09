@@ -142,7 +142,7 @@ export default function GridCard({ movie, onStatusChange, onOpenDetail }) {
               fontWeight: 500,
             }}
           >
-            {isWatched ? '↺' : isWatching ? '✓ Vista' : '▶ Ver'}
+            {isWatched ? '↺' : isWatching ? '✓ Watched' : '▶ Watch'}
           </button>
         </div>
       </div>

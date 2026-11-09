@@ -84,11 +84,11 @@ export default function ApiKeySetup({ onSave }) {
     e.preventDefault();
     const trimmed = key.trim();
     if (!trimmed) {
-      setError('Ingresá tu API key de OMDB');
+      setError('Enter your OMDB API key');
       return;
     }
     if (trimmed.length < 6) {
-      setError('La key parece inválida (demasiado corta)');
+      setError('That key looks invalid (too short)');
       return;
     }
     onSave(trimmed);
@@ -100,13 +100,13 @@ export default function ApiKeySetup({ onSave }) {
         <div style={styles.icon}>🎬</div>
         <h1 style={styles.title}>CineTrack</h1>
         <p style={styles.subtitle}>
-          Para empezar a usar CineTrack, necesitás una API key gratuita de OMDB.
+          To start using CineTrack you need a free OMDB API key.
         </p>
         <form onSubmit={handleSubmit}>
           <input
             style={styles.input}
             type="text"
-            placeholder="Pegá tu API key aquí…"
+            placeholder="Paste your API key here…"
             value={key}
             onChange={(e) => {
               setKey(e.target.value);
@@ -115,7 +115,7 @@ export default function ApiKeySetup({ onSave }) {
             autoFocus
           />
           <p style={styles.hint}>
-            Conseguila gratis en{' '}
+            Get one for free at{' '}
             <a
               href="https://www.omdbapi.com/apikey.aspx"
               target="_blank"
@@ -124,10 +124,10 @@ export default function ApiKeySetup({ onSave }) {
             >
               omdbapi.com/apikey
             </a>
-            {' '}(1,000 requests/día)
+            {' '}(1,000 requests/day)
           </p>
           <button type="submit" style={styles.button}>
-            Guardar y empezar
+            Save and start
           </button>
           {error && <p style={styles.error}>{error}</p>}
         </form>

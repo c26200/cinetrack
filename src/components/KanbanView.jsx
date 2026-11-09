@@ -43,9 +43,9 @@ const colStyles = {
 
 export default function KanbanView({ movies, onStatusChange, onOpenDetail, onRemove, onDrop }) {
   const columns = [
-    { status: 'pending', title: 'Por Ver', glow: 'rgba(212,168,83,0.06)' },
-    { status: 'watching', title: 'Viendo', glow: 'rgba(90,143,191,0.08)' },
-    { status: 'watched', title: 'Ya Vista', glow: 'rgba(90,143,92,0.08)' },
+    { status: 'pending', title: 'To watch', glow: 'rgba(212,168,83,0.06)' },
+    { status: 'watching', title: 'Watching', glow: 'rgba(90,143,191,0.08)' },
+    { status: 'watched', title: 'Watched', glow: 'rgba(90,143,92,0.08)' },
   ];
 
   const handleDragOver = (e) => {
@@ -80,7 +80,7 @@ export default function KanbanView({ movies, onStatusChange, onOpenDetail, onRem
             </div>
             {colMovies.length === 0 ? (
               <div style={colStyles.empty}>
-                Arrastrá películas aquí
+                Drop movies here
               </div>
             ) : (
               colMovies.map((m) => (

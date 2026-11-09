@@ -1,9 +1,9 @@
 export default function FilterTabs({ filter, onChange, counts }) {
   const tabs = [
-    { key: 'all', label: 'Todas' },
-    { key: 'pending', label: 'Por Ver' },
-    { key: 'watching', label: 'Viendo' },
-    { key: 'watched', label: 'Vistas' },
+    { key: 'all', label: 'All' },
+    { key: 'pending', label: 'To watch' },
+    { key: 'watching', label: 'Watching' },
+    { key: 'watched', label: 'Watched' },
   ];
 
   return (

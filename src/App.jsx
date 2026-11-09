@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useMovieStore } from './store/useMovieStore';
 import { getMovieDetail } from './api/omdb';
+import ApiKeySetup from './components/ApiKeySetup';
 import Header from './components/Header';
 import OmdbSearch from './components/OmdbSearch';
 import FilterTabs from './components/FilterTabs';
@@ -21,7 +22,7 @@ const sharedBtn = {
 };
 
 export default function App() {
-  const { state, dispatch, filteredMovies, apiKey, exportMovies, importMovies } = useMovieStore();
+  const { state, dispatch, filteredMovies, apiKey, setApiKey, exportMovies, importMovies } = useMovieStore();
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [localQuery, setLocalQuery] = useState('');
 
@@ -65,7 +66,7 @@ export default function App() {
       if (movie.status === 'watched') {
         dispatch({ type: 'STATUS', payload: { id: movie.imdbID, status: 'pending' } });
       } else if (movie.status === 'watching') {
-        const rating = window.prompt('¿Qué puntuación le das? (1–5)', '4');
+        const rating = window.prompt('Rate it from 1 to 5', '4');
         const num = parseInt(rating, 10);
         dispatch({ type: 'STATUS', payload: { id: movie.imdbID, status: 'watched' } });
         if (num >= 1 && num <= 5) {
@@ -77,6 +78,10 @@ export default function App() {
     },
     [dispatch]
   );
+
+  if (!apiKey) {
+    return <ApiKeySetup onSave={setApiKey} />;
+  }
 
   return (
     <div
@@ -109,15 +114,15 @@ export default function App() {
       >
         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
           {state.movies.length > 0
-            ? `${state.movies.length} película${state.movies.length > 1 ? 's' : ''}`
-            : 'Sin películas — buscá y agregá la primera ↑'}
+            ? `${state.movies.length} movie${state.movies.length > 1 ? 's' : ''}`
+            : 'No movies yet — search and add your first one ↑'}
         </span>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button onClick={exportMovies} style={sharedBtn} title="Descargá tu lista como JSON para compartir">
-            📥 Exportar
+          <button onClick={exportMovies} style={sharedBtn} title="Download your list as JSON">
+            📥 Export
           </button>
-          <button onClick={importMovies} style={sharedBtn} title="Importá una lista desde un archivo JSON">
-            📤 Importar
+          <button onClick={importMovies} style={sharedBtn} title="Import a list from a JSON file">
+            📤 Import
           </button>
         </div>
       </div>

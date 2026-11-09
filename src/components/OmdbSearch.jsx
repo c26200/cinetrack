@@ -48,7 +48,7 @@ export default function OmdbSearch({ apiKey, onAdd }) {
     <div ref={containerRef} style={{ marginBottom: '20px', position: 'relative' }}>
       <input
         type="text"
-        placeholder="Buscar película en OMDB y agregar a tu lista… (ej. «Inception»)"
+        placeholder="Search OMDB and add to your list… (e.g. “Inception”)"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => results.length > 0 && setOpen(true)}
@@ -73,7 +73,7 @@ export default function OmdbSearch({ apiKey, onAdd }) {
             color: 'var(--text-muted)',
           }}
         >
-          buscando…
+          searching…
         </span>
       )}
       {open && results.length > 0 && (

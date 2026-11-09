@@ -166,12 +166,12 @@ export default function MovieCard({ movie, onStatusChange, onOpenDetail, onRemov
               isWatched ? 'var(--green-done)' : 'var(--gold)'
             )}
           >
-            {isWatched ? '↺ Repetir' : isWatching ? '✓ Vista' : '▶ Ver'}
+            {isWatched ? '↺ Watch again' : isWatching ? '✓ Watched' : '▶ Watch'}
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (window.confirm(`¿Eliminar «${movie.title}»?`)) onRemove(movie.imdbID);
+              if (window.confirm(`Delete “${movie.title}”?`)) onRemove(movie.imdbID);
             }}
             style={btn('var(--bg-surface)', 'var(--bg-hover)', 'var(--text-muted)')}
           >

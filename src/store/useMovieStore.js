@@ -1,7 +1,7 @@
-import { useReducer, useEffect, useCallback, useMemo } from 'react';
+import { useReducer, useState, useEffect, useCallback, useMemo } from 'react';
 
 const STORAGE_KEY = 'cinetrack-movies';
-const API_KEY = 'ec83d8bc';
+const API_KEY_STORAGE = 'cinetrack-api-key';
 
 function loadState() {
   try {
@@ -101,6 +101,24 @@ export function useMovieStore() {
     view: 'kanban',
   });
 
+  // OMDB key: read from localStorage so it survives reloads
+  const [apiKey, setApiKeyState] = useState(() => {
+    try {
+      return localStorage.getItem(API_KEY_STORAGE) || '';
+    } catch {
+      return '';
+    }
+  });
+
+  const setApiKey = useCallback((key) => {
+    try {
+      localStorage.setItem(API_KEY_STORAGE, key);
+    } catch {
+      /* ignore storage errors */
+    }
+    setApiKeyState(key);
+  }, []);
+
   // Hydrate from localStorage on mount
   useEffect(() => {
     const saved = loadState();
@@ -139,12 +157,12 @@ export function useMovieStore() {
           const data = JSON.parse(ev.target.result);
           if (Array.isArray(data)) {
             dispatch({ type: 'IMPORT', payload: data });
-            alert(`✅ ${data.length} películas importadas. Las duplicadas se omitieron.`);
+            alert(`✅ ${data.length} movies imported. Duplicates were skipped.`);
           } else {
-            alert('❌ El archivo no es válido.');
+            alert('❌ That file is not valid.');
           }
         } catch {
-          alert('❌ No se pudo leer el archivo.');
+          alert('❌ Could not read the file.');
         }
       };
       reader.readAsText(file);
@@ -185,7 +203,8 @@ export function useMovieStore() {
     state,
     dispatch,
     filteredMovies,
-    apiKey: API_KEY,
+    apiKey,
+    setApiKey,
     exportMovies,
     importMovies,
   };

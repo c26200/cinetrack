@@ -23,9 +23,9 @@ const STATUS_BADGES = {
 };
 
 const STATUS_LABELS = {
-  pending: 'Por Ver',
-  watching: 'Viendo',
-  watched: 'Vista',
+  pending: 'To watch',
+  watching: 'Watching',
+  watched: 'Watched',
 };
 
 export default function ListView({ movies, onStatusChange, onOpenDetail, onRemove }) {
@@ -40,7 +40,7 @@ export default function ListView({ movies, onStatusChange, onOpenDetail, onRemov
           fontStyle: 'italic',
         }}
       >
-        No hay películas en esta lista
+        No movies in this list
       </div>
     );
   }
@@ -56,11 +56,11 @@ export default function ListView({ movies, onStatusChange, onOpenDetail, onRemov
         <thead>
           <tr>
             <th style={{ ...cell('16px'), width: '60px', textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}></th>
-            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Título</th>
-            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Año</th>
+            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Title</th>
+            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Year</th>
             <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>IMDB</th>
-            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Estado</th>
-            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Mi puntuación</th>
+            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Status</th>
+            <th style={{ ...cell('16px'), textAlign: 'left', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>My rating</th>
             <th style={{ ...cell('16px'), width: '80px' }}></th>
           </tr>
         </thead>
@@ -128,7 +128,7 @@ export default function ListView({ movies, onStatusChange, onOpenDetail, onRemov
               </td>
               <td style={cell('16px')}>
                 <span style={STATUS_BADGES[m.status] || STATUS_BADGES.pending}>
-                  {STATUS_LABELS[m.status] || 'Por Ver'}
+                  {STATUS_LABELS[m.status] || 'To watch'}
                 </span>
               </td>
               <td style={cell('16px')}>
@@ -145,7 +145,7 @@ export default function ListView({ movies, onStatusChange, onOpenDetail, onRemov
                       e.stopPropagation();
                       onStatusChange(m);
                     }}
-                    title={m.status === 'watched' ? 'Repetir' : m.status === 'watching' ? 'Marcar vista' : 'Marcar viendo'}
+                    title={m.status === 'watched' ? 'Watch again' : m.status === 'watching' ? 'Mark as watched' : 'Mark as watching'}
                     style={{
                       background: 'none',
                       border: '1px solid var(--border)',
@@ -162,9 +162,9 @@ export default function ListView({ movies, onStatusChange, onOpenDetail, onRemov
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (window.confirm(`¿Eliminar «${m.title}»?`)) onRemove(m.imdbID);
+                      if (window.confirm(`Delete “${m.title}”?`)) onRemove(m.imdbID);
                     }}
-                    title="Eliminar"
+                    title="Delete"
                     style={{
                       background: 'none',
                       border: '1px solid var(--border)',

@@ -18,7 +18,3 @@ export async function getMovieDetail(imdbID, apiKey) {
   const res = await fetch(`${BASE}?${params}`);
   return await res.json();
 }
-
-export function posterUrl(imdbID) {
-  return `https://img.omdbapi.com/?apikey=ec83d8bc&i=${imdbID}&h=400`;
-}

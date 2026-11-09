@@ -12,7 +12,7 @@ export default function GridView({ movies, onStatusChange, onOpenDetail }) {
           fontStyle: 'italic',
         }}
       >
-        No hay películas en esta lista. Buscá y agregá tu primera película arriba ↑
+        No movies in this list yet. Search and add your first one above ↑
       </div>
     );
   }
