@@ -16,9 +16,9 @@ and move it through three states: pending, watching and watched.
 
 ## Setup
 
-CineTrack uses your own OMDB API key. Get a free one at [omdbapi.com](https://www.omdbapi.com/apikey.aspx)
-and enter it in the setup screen the first time you open the app. It is stored in
-`localStorage` and never sent anywhere except OMDB.
+CineTrack needs an OMDB API key. You can enter it in the setup screen on first run — it is
+stored in `localStorage` and only sent to OMDB — or provide a default for every visitor by
+setting `VITE_OMDB_API_KEY` (see `.env.example`).
 
 ```bash
 npm install

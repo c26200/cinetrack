@@ -101,12 +101,13 @@ export function useMovieStore() {
     view: 'kanban',
   });
 
-  // OMDB key: read from localStorage so it survives reloads
+  // OMDB key: user-provided key wins, then the build-time env default
   const [apiKey, setApiKeyState] = useState(() => {
+    const envKey = import.meta.env.VITE_OMDB_API_KEY || '';
     try {
-      return localStorage.getItem(API_KEY_STORAGE) || '';
+      return localStorage.getItem(API_KEY_STORAGE) || envKey;
     } catch {
-      return '';
+      return envKey;
     }
   });
 
