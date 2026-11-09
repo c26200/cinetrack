@@ -1,16 +1,46 @@
-# React + Vite
+# CineTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A movie watchlist built with React and the OMDB API. Search for a film, add it to the board
+and move it through three states: pending, watching and watched.
 
-Currently, two official plugins are available:
+**[Live demo](https://cinetrack-gold-theta.vercel.app)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What it does
 
-## React Compiler
+- Search movies by title through the OMDB API
+- Organise them in a kanban board, a poster grid or a compact list
+- Rate each movie from one to five stars and add a short note
+- Persist the whole board in `localStorage`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Setup
 
-## Expanding the ESLint configuration
+CineTrack uses your own OMDB API key. Get a free one at [omdbapi.com](https://www.omdbapi.com/apikey.aspx)
+and enter it in the setup screen the first time you open the app. It is stored in
+`localStorage` and never sent anywhere except OMDB.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+## Structure
+
+```
+src/
+├── api/omdb.js                # Search and detail requests
+├── components/
+│   ├── ApiKeySetup.jsx        # First-run key screen
+│   ├── MovieBoard.jsx         # State shared by the three views
+│   ├── KanbanView.jsx
+│   ├── GridView.jsx
+│   ├── ListView.jsx
+│   ├── MovieModal.jsx         # Details, rating and notes
+│   └── OmdbSearch.jsx
+├── App.jsx
+└── index.css
+```
+
+## Notes
+
+There is no backend: the watchlist lives in the browser, so clearing site data erases it.
+The free OMDB tier returns 10 results per query, and the app does not paginate.
