@@ -3,53 +3,21 @@ import { createPortal } from 'react-dom';
 import PosterImage from './PosterImage';
 import StarRating from './StarRating';
 
-const styles = {
-  backdrop: {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0,0,0,0.8)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-    padding: '24px',
-  },
-  modal: {
-    background: 'var(--bg-surface)',
-    border: '1px solid var(--border)',
-    borderRadius: 'var(--radius-lg)',
-    maxWidth: '700px',
-    width: '100%',
-    maxHeight: '90vh',
-    overflow: 'auto',
-    display: 'flex',
-    gap: '28px',
-    padding: '28px',
-  },
-  label: {
-    fontSize: '0.72rem',
-    fontWeight: 600,
-    color: 'var(--text-muted)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.06em',
-    marginBottom: '4px',
-  },
-  metaRow: {
-    display: 'flex',
-    gap: '24px',
-    marginBottom: '16px',
-    flexWrap: 'wrap',
-  },
-  btn: {
-    padding: '8px 18px',
-    borderRadius: 'var(--radius-sm)',
-    border: '1px solid var(--border)',
-    background: 'var(--bg-elevated)',
-    color: 'var(--text-secondary)',
-    fontSize: '0.8rem',
-    cursor: 'pointer',
-    fontWeight: 500,
-  },
+const label = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: '11px',
+  letterSpacing: '.12em',
+  color: 'var(--muted)',
+  marginBottom: '3px',
+};
+
+const btn = {
+  padding: '9px 16px',
+  border: '1px solid var(--ink)',
+  background: 'transparent',
+  color: 'var(--ink)',
+  fontSize: '13px',
+  letterSpacing: '.02em',
 };
 
 export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, onStatusChange }) {
@@ -68,84 +36,100 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
     return () => clearTimeout(timer);
   }, [notes, movie.imdbID, onNote]);
 
+  const statusLabel =
+    movie.status === 'watched'
+      ? '↺ Mark as unwatched'
+      : movie.status === 'watching'
+      ? '✓ Mark as watched'
+      : '▶ Mark as watching';
+
   return createPortal(
-    <div style={styles.backdrop} onClick={onClose}>
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(17,17,17,0.55)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '24px',
+      }}
+    >
       <div
-        style={styles.modal}
         onClick={(e) => e.stopPropagation()}
+        style={{
+          background: 'var(--paper)',
+          border: '2px solid var(--ink)',
+          maxWidth: '780px',
+          width: '100%',
+          maxHeight: '90vh',
+          overflow: 'auto',
+          display: 'flex',
+          gap: '28px',
+          padding: '26px',
+        }}
       >
-        {/* Poster */}
-        <div style={{ flexShrink: 0, width: '200px' }}>
+        <div style={{ flexShrink: 0, width: '220px' }}>
           <PosterImage
             poster={movie.poster}
             imdbID={movie.imdbID}
             title={movie.title}
-            className=""
-            style={{
-              width: '100%',
-              borderRadius: 'var(--radius-md)',
-              aspectRatio: '2/3',
-            }}
+            style={{ width: '100%', aspectRatio: '2/3' }}
           />
         </div>
 
-        {/* Info */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <h2
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.8rem',
-              fontWeight: 600,
-              color: 'var(--gold)',
-              marginBottom: '4px',
-              lineHeight: 1.2,
+              fontSize: '30px',
+              fontWeight: 700,
+              letterSpacing: '-.03em',
+              lineHeight: 1.05,
+              marginBottom: '14px',
             }}
           >
             {movie.title}
           </h2>
 
-          <div style={styles.metaRow}>
+          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', marginBottom: '16px' }}>
             <div>
-              <div style={styles.label}>Year</div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>{movie.year}</span>
+              <div style={label}>YEAR</div>
+              <span className="mono" style={{ fontSize: '14px' }}>{movie.year}</span>
             </div>
             <div>
-              <div style={styles.label}>IMDB</div>
-              <span style={{ fontSize: '0.85rem', color: 'var(--gold)' }}>★ {movie.imdbRating || '—'}</span>
+              <div style={label}>IMDB</div>
+              <span className="mono" style={{ fontSize: '14px' }}>★ {movie.imdbRating || '—'}</span>
             </div>
             <div>
-              <div style={styles.label}>Runtime</div>
-              <span style={{ fontSize: '0.85rem' }}>{movie.runtime || '—'}</span>
+              <div style={label}>RUNTIME</div>
+              <span className="mono" style={{ fontSize: '14px' }}>{movie.runtime || '—'}</span>
             </div>
             <div>
-              <div style={styles.label}>Genre</div>
-              <span style={{ fontSize: '0.85rem' }}>{movie.genre || '—'}</span>
+              <div style={label}>GENRE</div>
+              <span className="mono" style={{ fontSize: '14px' }}>{movie.genre || '—'}</span>
             </div>
             <div>
-              <div style={styles.label}>Director</div>
-              <span style={{ fontSize: '0.85rem' }}>{movie.director || '—'}</span>
+              <div style={label}>DIRECTOR</div>
+              <span className="mono" style={{ fontSize: '14px' }}>{movie.director || '—'}</span>
             </div>
           </div>
 
-          {/* Plot */}
           {movie.plot && (
             <div style={{ marginBottom: '18px' }}>
-              <div style={styles.label}>Sinopsis</div>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                {movie.plot}
-              </p>
+              <div style={label}>SYNOPSIS</div>
+              <p style={{ fontSize: '14px', lineHeight: 1.55, color: '#333' }}>{movie.plot}</p>
             </div>
           )}
 
-          {/* User Rating */}
-          <div style={{ marginBottom: '18px' }}>
-            <div style={styles.label}>My rating</div>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={label}>MY RATING</div>
             <StarRating value={movie.userRating || 0} onChange={(v) => onRate(movie.imdbID, v)} />
           </div>
 
-          {/* Notes */}
           <div style={{ marginBottom: '18px' }}>
-            <div style={styles.label}>Notes</div>
+            <div style={label}>NOTES</div>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -153,29 +137,23 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
               rows={3}
               style={{
                 width: '100%',
-                background: 'var(--bg-elevated)',
-                border: '1px solid var(--border)',
-                color: 'var(--text-primary)',
+                background: 'var(--paper)',
+                border: '1px solid var(--rule)',
+                color: 'var(--ink)',
                 padding: '10px 12px',
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '0.84rem',
+                fontSize: '14px',
                 resize: 'vertical',
                 fontFamily: 'var(--font-body)',
               }}
             />
           </div>
 
-          {/* Actions */}
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <button
               onClick={() => onStatusChange(movie)}
-              style={{ ...styles.btn, color: 'var(--gold)', borderColor: 'var(--gold-dim)' }}
+              style={{ ...btn, background: 'var(--ink)', color: 'var(--paper)' }}
             >
-              {movie.status === 'watched'
-                ? '↺ Mark as unwatched'
-                : movie.status === 'watching'
-                ? '✓ Mark as watched'
-                : '▶ Marcar como viendo'}
+              {statusLabel}
             </button>
             <button
               onClick={() => {
@@ -184,13 +162,11 @@ export default function MovieModal({ movie, onClose, onRate, onNote, onRemove, o
                   onClose();
                 }
               }}
-              style={{ ...styles.btn, color: 'var(--red-remove)', borderColor: 'var(--red-remove)' }}
+              style={{ ...btn, color: 'var(--red-dark)', borderColor: 'var(--red-dark)' }}
             >
               Delete
             </button>
-            <button onClick={onClose} style={styles.btn}>
-              Close
-            </button>
+            <button onClick={onClose} style={btn}>Close</button>
           </div>
         </div>
       </div>

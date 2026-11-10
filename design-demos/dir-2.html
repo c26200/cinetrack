@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CineTrack — Cinema Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #FAF7F0; color: #1C1B19;
+    font-family: "Inter", sans-serif;
+    height: 100vh; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  nav { height: 76px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 56px; border-bottom: 1px solid #DCD6C9; }
+  .wordmark { font: 600 24px/1 "Fraunces", serif; letter-spacing: -.01em; }
+  .wordmark span { color: #A33B2B; }
+  .links { display: flex; gap: 30px; font-size: 14px; color: #6B665C; }
+  .links .on { color: #1C1B19; border-bottom: 1px solid #1C1B19; padding-bottom: 3px; }
+  .search { width: 300px; border-bottom: 1px solid #1C1B19; padding: 6px 0; font-size: 14px; color: #6B665C; display: flex; justify-content: space-between; }
+  .search b { font-weight: 400; }
+
+  main { flex: 1; display: flex; flex-direction: column; padding: 30px 56px 24px; min-height: 0; }
+
+  .hero { display: flex; gap: 34px; flex: none; }
+  .hero .poster { width: 268px; flex: none; }
+  .hero .poster img { width: 100%; height: 386px; object-fit: cover; display: block; }
+  .hero .info { display: flex; flex-direction: column; justify-content: center; }
+  .eyebrow { font-size: 12px; letter-spacing: .2em; color: #A33B2B; }
+  .hero h1 { font: 600 68px/.96 "Fraunces", serif; letter-spacing: -.03em; margin-top: 6px; }
+  .meta { display: flex; gap: 28px; margin-top: 18px; font-size: 14px; color: #6B665C; }
+  .meta b { color: #1C1B19; font-weight: 500; display: block; margin-top: 3px; }
+  .stars { margin-top: 20px; font-size: 22px; letter-spacing: 6px; color: #1C1B19; }
+  .stars span { color: #6B6457; }
+  .note { margin-top: 18px; max-width: 430px; font-size: 14px; line-height: 1.6; color: #4A463E; }
+  .actions { display: flex; gap: 12px; margin-top: 24px; }
+  .btn { border: 1px solid #1C1B19; padding: 9px 18px; font-size: 13px; letter-spacing: .04em; }
+  .btn.solid { background: #1C1B19; color: #FAF7F0; }
+
+  .shelf { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 30px; border-top: 1px solid #DCD6C9; padding-top: 18px; min-height: 0; }
+  .shelf h2 { font-size: 12px; font-weight: 600; letter-spacing: .18em; color: #6B665C; display: flex; justify-content: flex-start; gap: 10px; }
+  .shelf h2 span { color: #A33B2B; }
+  .row { display: flex; gap: 12px; margin-top: 12px; }
+  .item { width: 104px; }
+  .item img { width: 100%; height: 150px; object-fit: cover; display: block; }
+  .item .t { font-size: 13px; font-weight: 500; margin-top: 6px; line-height: 1.2; }
+  .item .y { font-size: 12px; color: #6B665C; margin-top: 2px; }
+
+  footer { flex: none; display: flex; justify-content: space-between; padding-top: 14px; border-top: 1px solid #DCD6C9; font-size: 12px; letter-spacing: .06em; color: #6B665C; }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="wordmark">Cine<span>Track</span></div>
+    <div class="links"><span class="on">Library</span><span>To watch</span><span>Watching</span><span>Watched</span></div>
+    <div class="search"><b>Search OMDB…</b><span>⌕</span></div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="poster"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt1375666&h=400" alt="Inception"></div>
+      <div class="info">
+        <div class="eyebrow">WATCHING · 01 OF 08</div>
+        <h1>Inception</h1>
+        <div class="meta">
+          <div>YEAR<b>2010</b></div>
+          <div>DIRECTOR<b>Christopher Nolan</b></div>
+          <div>RUNTIME<b>148 min</b></div>
+          <div>GENRE<b>Sci-Fi, Action</b></div>
+        </div>
+        <div class="stars">★ ★ ★ <span>★ ★</span></div>
+        <p class="note">A thief who steals corporate secrets through dream-sharing technology is given the inverse task: plant an idea in a target's mind.</p>
+        <div class="actions"><div class="btn solid">Mark as watched</div><div class="btn">Add note</div></div>
+      </div>
+    </section>
+
+    <section class="shelf">
+      <div>
+        <h2>TO WATCH <span>3</span></h2>
+        <div class="row">
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt2582802&h=400"><div class="t">Whiplash</div><div class="y">2014</div></div>
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt6751668&h=400"><div class="t">Parasite</div><div class="y">2019</div></div>
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt1160419&h=400"><div class="t">Dune</div><div class="y">2021</div></div>
+        </div>
+      </div>
+      <div>
+        <h2>WATCHING <span>2</span></h2>
+        <div class="row">
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt1375666&h=400"><div class="t">Inception</div><div class="y">2010</div></div>
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt0816692&h=400"><div class="t">Interstellar</div><div class="y">2014</div></div>
+        </div>
+      </div>
+      <div>
+        <h2>WATCHED <span>3</span></h2>
+        <div class="row">
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt0111161&h=400"><div class="t">The Shawshank Redemption</div><div class="y">1994</div></div>
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt0068646&h=400"><div class="t">The Godfather</div><div class="y">1972</div></div>
+          <div class="item"><img src="https://img.omdbapi.com/?apikey=ec83d8bc&i=tt0110912&h=400"><div class="t">Pulp Fiction</div><div class="y">1994</div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer><span>8 FILMS · 3 TO WATCH · 2 WATCHING · 3 WATCHED</span><span>LOCAL LIBRARY · EXPORT JSON</span></footer>
+  </main>
+</body>
+</html>

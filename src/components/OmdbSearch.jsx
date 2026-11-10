@@ -45,7 +45,7 @@ export default function OmdbSearch({ apiKey, onAdd }) {
   };
 
   return (
-    <div ref={containerRef} style={{ marginBottom: '20px', position: 'relative' }}>
+    <div ref={containerRef} style={{ marginBottom: '10px', position: 'relative' }}>
       <input
         type="text"
         placeholder="Search OMDB and add to your list… (e.g. “Inception”)"
@@ -57,9 +57,9 @@ export default function OmdbSearch({ apiKey, onAdd }) {
           background: 'var(--bg-surface)',
           border: `1px solid ${open ? 'var(--gold)' : 'var(--border)'}`,
           color: 'var(--text-primary)',
-          padding: '12px 16px',
+          padding: '8px 12px',
           borderRadius: 'var(--radius-md)',
-          fontSize: '0.93rem',
+          fontSize: '14px',
         }}
       />
       {loading && (

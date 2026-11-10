@@ -3,23 +3,11 @@ import { useMovieStore } from './store/useMovieStore';
 import { getMovieDetail } from './api/omdb';
 import ApiKeySetup from './components/ApiKeySetup';
 import Header from './components/Header';
-import OmdbSearch from './components/OmdbSearch';
+import FilmIndex from './components/FilmIndex';
 import FilterTabs from './components/FilterTabs';
+import OmdbSearch from './components/OmdbSearch';
 import MovieBoard from './components/MovieBoard';
 import MovieModal from './components/MovieModal';
-
-const sharedBtn = {
-  background: 'var(--bg-surface)',
-  border: '1px solid var(--border)',
-  color: 'var(--text-secondary)',
-  padding: '6px 14px',
-  borderRadius: 'var(--radius-sm)',
-  fontSize: '0.78rem',
-  cursor: 'pointer',
-  fontFamily: 'var(--font-body)',
-  fontWeight: 500,
-  transition: 'all 0.2s',
-};
 
 export default function App() {
   const { state, dispatch, filteredMovies, apiKey, setApiKey, exportMovies, importMovies } = useMovieStore();
@@ -27,11 +15,10 @@ export default function App() {
   const [localQuery, setLocalQuery] = useState('');
 
   const displayed = localQuery.trim()
-    ? filteredMovies.filter((m) =>
-        m.title.toLowerCase().includes(localQuery.toLowerCase())
-      )
+    ? filteredMovies.filter((m) => m.title.toLowerCase().includes(localQuery.toLowerCase()))
     : filteredMovies;
 
+  const pad = (n) => String(n || 0).padStart(2, '0');
   const counts = {
     all: state.movies.length,
     pending: state.movies.filter((m) => m.status === 'pending').length,
@@ -84,73 +71,52 @@ export default function App() {
   }
 
   return (
-    <div
-      style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 32px 64px',
-        minHeight: '100vh',
-      }}
-    >
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(0.85); }
-        }
-      `}</style>
-
-      {/* Top bar with export/import */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '10px 0 0',
-          borderBottom: '1px solid var(--border)',
-          marginBottom: '0',
-          flexWrap: 'wrap',
-        }}
-      >
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          {state.movies.length > 0
-            ? `${state.movies.length} movie${state.movies.length > 1 ? 's' : ''}`
-            : 'No movies yet — search and add your first one ↑'}
-        </span>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button onClick={exportMovies} style={sharedBtn} title="Download your list as JSON">
-            📥 Export
-          </button>
-          <button onClick={importMovies} style={sharedBtn} title="Import a list from a JSON file">
-            📤 Import
-          </button>
-        </div>
-      </div>
-
+    <div className="app">
       <Header
         view={state.view}
         onViewChange={(v) => dispatch({ type: 'VIEW', payload: v })}
         sortBy={state.sortBy}
         onSortChange={(s) => dispatch({ type: 'SORT', payload: s })}
         onLocalSearch={setLocalQuery}
-      />
-
-      <OmdbSearch apiKey={apiKey} onAdd={handleAdd} />
-
-      <FilterTabs
-        filter={state.filter}
-        onChange={(f) => dispatch({ type: 'FILTER', payload: f })}
+        total={state.movies.length}
         counts={counts}
       />
 
-      <MovieBoard
-        view={state.view}
-        movies={displayed}
-        onStatusChange={handleStatusChange}
-        onOpenDetail={setSelectedMovie}
-        onRemove={(id) => dispatch({ type: 'REMOVE', payload: id })}
-        onDrop={(id, status) => dispatch({ type: 'STATUS', payload: { id, status } })}
-      />
+      <div className="split">
+        <FilmIndex
+          movies={state.movies}
+          onOpenDetail={setSelectedMovie}
+          activeId={selectedMovie?.imdbID}
+        />
+
+        <main className="canvas">
+          <OmdbSearch apiKey={apiKey} onAdd={handleAdd} />
+          <FilterTabs
+            filter={state.filter}
+            onChange={(f) => dispatch({ type: 'FILTER', payload: f })}
+            counts={counts}
+          />
+          <MovieBoard
+            view={state.view}
+            movies={displayed}
+            onStatusChange={handleStatusChange}
+            onOpenDetail={setSelectedMovie}
+            onRemove={(id) => dispatch({ type: 'REMOVE', payload: id })}
+            onDrop={(id, status) => dispatch({ type: 'STATUS', payload: { id, status } })}
+          />
+        </main>
+      </div>
+
+      <footer className="statusbar">
+        <div>
+          {pad(state.movies.length)} FILMS · {pad(counts.pending)} TO WATCH · {pad(counts.watching)} WATCHING ·{' '}
+          {pad(counts.watched)} WATCHED
+        </div>
+        <div className="acts">
+          <button onClick={exportMovies}>EXPORT JSON</button>
+          <button onClick={importMovies}>IMPORT JSON</button>
+        </div>
+      </footer>
 
       {selectedMovie && (
         <MovieModal

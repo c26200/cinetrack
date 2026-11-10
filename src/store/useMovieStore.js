@@ -98,7 +98,7 @@ export function useMovieStore() {
     movies: [],
     filter: 'all',
     sortBy: 'addedAt',
-    view: 'kanban',
+    view: 'grid',
   });
 
   // OMDB key: user-provided key wins, then the build-time env default

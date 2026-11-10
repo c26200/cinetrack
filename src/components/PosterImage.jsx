@@ -5,7 +5,7 @@ const posterUrl = (imdbID) => {
   return key ? `https://img.omdbapi.com/?apikey=${key}&i=${imdbID}&h=400` : null;
 };
 
-export default function PosterImage({ poster, imdbID, title, className = '' }) {
+export default function PosterImage({ poster, imdbID, title, className = '', style = {} }) {
   // If we have a valid poster URL from the API, use it
   const src = poster || posterUrl(imdbID) || '';
   const initials = title
@@ -27,6 +27,7 @@ export default function PosterImage({ poster, imdbID, title, className = '' }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        ...style,
       }}
     >
       <img

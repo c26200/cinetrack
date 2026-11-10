@@ -1,37 +1,19 @@
 import GridCard from './GridCard';
 
-export default function GridView({ movies, onStatusChange, onOpenDetail }) {
+export default function GridView({ movies, onOpenDetail }) {
   if (movies.length === 0) {
     return (
-      <div
-        style={{
-          textAlign: 'center',
-          color: 'var(--text-muted)',
-          fontSize: '0.9rem',
-          padding: '64px 24px',
-          fontStyle: 'italic',
-        }}
-      >
-        No movies in this list yet. Search and add your first one above ↑
+      <div className="empty-state">
+        <b>Nothing in this list.</b>
+        <span>Search OMDB and add your first film.</span>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))',
-        gap: '20px',
-      }}
-    >
-      {movies.map((m) => (
-        <GridCard
-          key={m.imdbID}
-          movie={m}
-          onStatusChange={onStatusChange}
-          onOpenDetail={onOpenDetail}
-        />
+    <div className="wall">
+      {movies.map((m, i) => (
+        <GridCard key={m.imdbID} movie={m} index={i + 1} onOpenDetail={onOpenDetail} />
       ))}
     </div>
   );

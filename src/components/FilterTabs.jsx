@@ -1,60 +1,23 @@
+const TABS = [
+  { key: 'all', label: 'ALL' },
+  { key: 'pending', label: 'TO WATCH' },
+  { key: 'watching', label: 'WATCHING' },
+  { key: 'watched', label: 'WATCHED' },
+];
+
 export default function FilterTabs({ filter, onChange, counts }) {
-  const tabs = [
-    { key: 'all', label: 'All' },
-    { key: 'pending', label: 'To watch' },
-    { key: 'watching', label: 'Watching' },
-    { key: 'watched', label: 'Watched' },
-  ];
+  const pad = (n) => String(n || 0).padStart(2, '0');
 
   return (
-    <nav
-      style={{
-        display: 'flex',
-        gap: '4px',
-        marginBottom: '24px',
-        borderBottom: '1px solid var(--border)',
-      }}
-    >
-      {tabs.map((t) => (
+    <nav className="tabs">
+      {TABS.map((t) => (
         <button
           key={t.key}
+          className={filter === t.key ? 'on' : ''}
           onClick={() => onChange(t.key)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: filter === t.key ? 'var(--gold)' : 'var(--text-muted)',
-            padding: '10px 18px',
-            cursor: 'pointer',
-            fontSize: '0.85rem',
-            fontWeight: 500,
-            position: 'relative',
-            transition: 'color 0.2s',
-          }}
         >
           {t.label}
-          <span
-            style={{
-              fontSize: '0.7rem',
-              opacity: 0.7,
-              marginLeft: '4px',
-              color: filter === t.key ? 'var(--gold-dim)' : 'var(--text-muted)',
-            }}
-          >
-            {counts[t.key]}
-          </span>
-          {filter === t.key && (
-            <span
-              style={{
-                position: 'absolute',
-                bottom: '-1px',
-                left: '18px',
-                right: '18px',
-                height: '2px',
-                background: 'var(--gold)',
-                borderRadius: '1px',
-              }}
-            />
-          )}
+          <span>{pad(counts[t.key])}</span>
         </button>
       ))}
     </nav>
